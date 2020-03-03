@@ -1,0 +1,23 @@
+{
+    "name": "Minecraft Server Observer",
+    "short_name": "MC Observer",
+    "start_url": "index.html",
+    "display": "standalone",
+    "background_color": "#fdfdfd",
+    "theme_color": "#db4938",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "Observer300.png",
+            "sizes": "300x300"
+        },
+        {
+            "src": "Observer192.png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "Observer512.png",
+            "sizes": "512x512"
+        }
+  ]
+}
