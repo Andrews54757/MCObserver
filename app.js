@@ -351,6 +351,7 @@ function createServerElements(server) {
         data: {
             datasets: [
                 {
+                    cubicInterpolationMode: "monotone",
                     label: "Players",
                     data: lineData
 }
@@ -633,18 +634,20 @@ function updateServer(server) {
             y: parseInt(server.online)
         })
 
-        if (server.elements.lineData.length > 50) {
 
-            for (var i = 1; i < server.elements.lineData.length - 1; i++) {
-                if (server.elements.lineData[i].y == server.elements.lineData[i + 1].y && server.elements.lineData[i].y == server.elements.lineData[i - 1].y) {
-                    server.elements.lineData.splice(i, 1);
-                    i--;
-                }
+        var time = Date.now();
+        for (var i = 0; i < server.elements.lineData.length - 1; i++) {
+            if (time - server.elements.lineData[i].y > 1000 * 60 * 60 * 1) {
+                server.elements.lineData.splice(i, 1);
+                i--;
+            } else
+            if (i != 0 && server.elements.lineData[i].y == server.elements.lineData[i + 1].y && server.elements.lineData[i].y == server.elements.lineData[i - 1].y) {
+                server.elements.lineData.splice(i, 1);
+                i--;
             }
         }
-        if (server.elements.lineData.length > 8000) {
-            server.elements.lineData.shift();
-        }
+
+
 
         server.elements.lineChart.update()
     } else {
