@@ -632,6 +632,16 @@ function updateServer(server) {
             x: Date.now(),
             y: parseInt(server.online)
         })
+
+        if (server.elements.lineData.length > 50) {
+
+            for (var i = 1; i < server.elements.lineData.length - 1; i++) {
+                if (server.elements.lineData[i].y == server.elements.lineData[i + 1].y && server.elements.lineData[i].y == server.elements.lineData[i - 1].y) {
+                    server.elements.lineData.splice(i, 1);
+                    i--;
+                }
+            }
+        }
         if (server.elements.lineData.length > 8000) {
             server.elements.lineData.shift();
         }
