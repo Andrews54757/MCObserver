@@ -716,6 +716,7 @@ function notify(str, server) {
     setTimeout(() => {
         notification.close();
     }, 4000)
+
 }
 
 function createPlayerItem(playerObj) {
