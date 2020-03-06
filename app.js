@@ -557,7 +557,9 @@ function createServerElements(server) {
 
     })
     status.addEventListener("mouseleave", () => {
-        if (!mouseOverWindow) playerListContainer.style.display = "none";
+        if (!showThingy) {
+            if (!mouseOverWindow) playerListContainer.style.display = "none";
+        }
 
     })
 
