@@ -8,13 +8,14 @@ const staticAssets = [
     "./fonts/minecraft.ttf",
     "./fonts/minecraft.woff",
     "./fonts/minecraft.woff2",
-    "AQuery.js",
-    "rose.png",
-    "witherrose.png",
-    "error.wav",
-    "ding.mp3",
-    "moment.js",
-    "Chart.min.js",
+    "./AQuery.js",
+    "./rose.png",
+    "./witherrose.png",
+    "./error.wav",
+    "./ding.mp3",
+    "./moment.js",
+    "./minecraft.png",
+    "./Chart.min.js",
 ];
 
 
