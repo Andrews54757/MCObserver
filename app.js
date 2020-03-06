@@ -290,11 +290,11 @@ function formatTime(d) {
 
 
     if (hours) {
-        return hours + ":" + minutes + ":" + seconds;
+        return hours + ":" + (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
 
 
     } else if (minutes) {
-        return minutes + ":" + seconds;
+        return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
     } else {
         return seconds + "s";
     }
