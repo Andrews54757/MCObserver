@@ -637,7 +637,7 @@ function updateServer(server) {
         if (server.elements.lineData.length > 2) {
 
             var moved = false;
-            if (server.elements.lineData[server.elements.lineData.length - 1].y == server.elements.lineData[server.elements.lineData.length - 2].y) {
+            if (server.elements.lineData[server.elements.lineData.length - 1].y == server.elements.lineData[server.elements.lineData.length - 2].y && server.elements.lineData[server.elements.lineData.length - 2].y == server.elements.lineData[server.elements.lineData.length - 3].y) {
                 server.elements.lineData[server.elements.lineData.length - 2].x = server.elements.lineData[server.elements.lineData.length - 1].x
                 moved = true;
 
