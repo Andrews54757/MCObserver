@@ -636,7 +636,7 @@ function updateServer(server) {
 
 
         var time = Date.now();
-        for (var i = 0; i < server.elements.lineData.length - 1; i++) {
+        for (var i = 0; i < server.elements.lineData.length - 2; i++) {
             if (time - server.elements.lineData[i].x > 1000 * 60 * 60 * 1) {
                 server.elements.lineData.splice(i, 1);
                 i--;
