@@ -4,19 +4,22 @@
     "start_url": "index.html",
     "display": "standalone",
     "background_color": "#fdfdfd",
-    "theme_color": "#db4938",
+    "theme_color": "#1e1e1e",
     "orientation": "portrait-primary",
     "icons": [
         {
             "src": "Observer300.png",
+            "type": "image/png",
             "sizes": "300x300"
         },
         {
             "src": "Observer192.png",
+            "type": "image/png",
             "sizes": "192x192"
         },
         {
             "src": "Observer512.png",
+            "type": "image/png",
             "sizes": "512x512"
         }
   ]
