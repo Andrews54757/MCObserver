@@ -632,21 +632,46 @@ function updateServer(server) {
         server.elements.statusspan.style.color = "rgb(0,100,0)";
 
         server.elements.playerspan.textContent = " - " + server.online + "/" + server.max + " Players"
-        server.elements.lineData.push({
-            x: Date.now(),
-            y: parseInt(server.online)
-        })
 
+        var online = parseInt(server.online);
+        if (server.elements.lineData.length > 2) {
+
+            var moved = false;
+            if (server.elements.lineData[server.elements.lineData.length - 1].y == server.elements.lineData[server.elements.lineData.length - 2].y) {
+                server.elements.lineData[server.elements.lineData.length - 2].x = server.elements.lineData[server.elements.lineData.length - 1].x
+                moved = true;
+
+            }
+            if (moved && server.elements.lineData[server.elements.lineData.length - 1].y == online) {
+                server.elements.lineData[server.elements.lineData.length - 1].x = Date.now();
+
+
+            } else {
+                if (moved) {
+                    server.elements.lineData[server.elements.lineData.length - 1].x = Date.now();
+                    server.elements.lineData[server.elements.lineData.length - 1].y = online;
+                } else {
+                    server.elements.lineData.push({
+                        x: Date.now(),
+                        y: online
+                    })
+                }
+            }
+
+        } else {
+            server.elements.lineData.push({
+                x: Date.now(),
+                y: online
+            })
+        }
 
         var time = Date.now();
         for (var i = 0; i < server.elements.lineData.length - 2; i++) {
             if (time - server.elements.lineData[i].x > 1000 * 60 * 60 * 1) {
                 server.elements.lineData.splice(i, 1);
                 i--;
-            } else
-            if (i != 0 && server.elements.lineData[i].y == server.elements.lineData[i + 1].y && server.elements.lineData[i].y == server.elements.lineData[i - 1].y) {
-                server.elements.lineData.splice(i, 1);
-                i--;
+            } else {
+                break;
             }
         }
 
