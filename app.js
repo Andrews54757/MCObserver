@@ -187,6 +187,9 @@ var config = {
 
 var joinAudio = new Audio("ding.mp3");
 var leaveAudio = new Audio("error.wav");
+
+joinAudio.loop = false;
+leaveAudio.loop = false;
 var servers = [];
 var serverListElement = document.getElementById("serverlist");
 
