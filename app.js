@@ -909,7 +909,7 @@ function mainLoop() {
                                     leave(leavePlayers.map((p) => {
                                         log(p.name + " has left " + server.config.name, server, leavePlayers)
                                         return p.name
-                                    }).join(", "), server)
+                                    }).join(", "), server, leavePlayers)
                                 } else if (server.online > server.lastOnline) {
                                     join((server.online - server.lastOnline === 1) ? "A player has" : ((server.online - server.lastOnline) + " players have"), server);
 
