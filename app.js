@@ -392,6 +392,7 @@ function createServerElements(server) {
         removeServer(server)
     });
 
+    nameinput.value = server.config.name;
     nameinput.addEventListener("change", () => {
         var value = nameinput.value;
 
@@ -614,7 +615,7 @@ function initializeServer(config) {
 function updateServer(server) {
 
 
-    server.elements.nameinput.value = server.config.name;
+    //server.elements.nameinput.value = server.config.name;
     var newicon = server.icon || "./minecraft.png";
     if (newicon != server.elements.icon.src) server.elements.icon.src = newicon;
     server.elements.statusspan.textContent = server.status;
