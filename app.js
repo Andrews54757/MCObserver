@@ -789,9 +789,9 @@ function mainLoop() {
         if (server.status != "OFFLINE")
             toQuery.push(server);
         else
-        if (server.attempts < 10) {
+        {
 
-            if (Date.now() - server.lastAttempt >= server.attempts * 6 * 1000)
+            if (Date.now() - server.lastAttempt >= Math.min(server.attempts * 6 * 1000, 1000*60))
                 toQuery.push(server);
         }
     })
