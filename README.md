@@ -1,6 +1,8 @@
 # minecraft server observer
 
-Observe Minecraft servers, and get notified when people join
+Observe Minecraft servers, and get audio and visual notifications when people join
+
+Note: Player-specific notifications will not work if the server has more than 12 players.
 
 https://andrews54757.github.io/MCObserver/
 
