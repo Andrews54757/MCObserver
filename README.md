@@ -15,3 +15,8 @@ Mobile-friendly:
 
 Configurable:
 <img width="1374" alt="Screen Shot" src="https://user-images.githubusercontent.com/13282284/107289630-53fe8e80-6a33-11eb-8dfd-05ec5e12bd97.png">
+
+PWA Supported:
+
+<img width="594" alt="Screen Shot" src="https://user-images.githubusercontent.com/13282284/107290348-5d3c2b00-6a34-11eb-948f-e98e4c39d15c.png">
+
