@@ -281,8 +281,6 @@ function addServer(name, address, port) {
     updateConfig();
 }
 
-//addServer("Owen's Server", "minecraftbasement.ddns.net", "25565")
-
 function formatTime(d) {
 
     var seconds = d % 60;
@@ -877,7 +875,7 @@ function mainLoop() {
 
                             }
                             server.players.forEach((player) => {
-                                if (player.foundIn != server.checks) {
+                                if (player.foundIn != server.checks && data.players.sample.length >= server.online) {
                                     leavePlayers.push(player);
                                     server.players.delete(player.id);
                                     server.oldplayers.set(player.id, player);
