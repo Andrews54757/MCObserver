@@ -875,7 +875,7 @@ function mainLoop() {
 
                             }
                             server.players.forEach((player) => {
-                                if (player.foundIn != server.checks && data.players.sample.length >= server.online) {
+                                if (player.foundIn != server.checks && (!data.players.sample || data.players.sample.length >= server.online)) {
                                     leavePlayers.push(player);
                                     server.players.delete(player.id);
                                     server.oldplayers.set(player.id, player);
