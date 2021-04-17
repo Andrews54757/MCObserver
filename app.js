@@ -601,6 +601,7 @@ function initializeServer(config) {
         checks: 0,
         players: new Map(),
         oldplayers: new Map(),
+        playersSeen: new Map(),
         leavePlayers: []
 
     }
@@ -835,10 +836,13 @@ function mainLoop() {
                             server.checks++;
                             var newPlayers = [];
                             var leavePlayers = server.leavePlayers;
+                            if (server.online != server.lastOnline) {
+                                server.playersSeen.clear();
+                            }
                             if (data.players.sample && data.players.sample.length) {
                                 data.players.sample.forEach((player) => {
                                     var foundPlayer = server.players.get(player.id)
-
+                                    server.playersSeen.set(player.id, player);
                                     if (!foundPlayer) {
 
                                         var pl = server.oldplayers.get(player.id);
@@ -875,7 +879,15 @@ function mainLoop() {
 
                             }
                             server.players.forEach((player) => {
-                                if (player.foundIn != server.checks && (!data.players.sample || data.players.sample.length >= server.online)) {
+                                var hasSeenPlayer = player.foundIn == server.checks;
+                                if (data.players.sample && data.players.sample.length < server.online) {
+                                    hasSeenPlayer = true;
+                                    if (server.playersSeen.size == server.online) {
+                                        hasSeenPlayer = server.playersSeen.has(player.id);
+                                    }
+                                }
+                                
+                                if (!hasSeenPlayer) {
                                     leavePlayers.push(player);
                                     server.players.delete(player.id);
                                     server.oldplayers.set(player.id, player);
@@ -893,6 +905,10 @@ function mainLoop() {
                                     }
                                 }
                             })
+                            
+                            if (server.playersSeen.size >= server.online)
+                                server.playersSeen.clear();
+                            
                             if (newPlayers.length) {
 
                                 join(newPlayers.map((p) => {
