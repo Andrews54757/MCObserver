@@ -911,7 +911,7 @@ function mainLoop() {
                             if (server.playersSeen.size >= server.online)
                                 server.playersSeen.clear();
                             
-                            var shouldAnnouncePlayer = !server.isOverSampleLimit || server.online != server.lastOnline;
+                            var shouldAnnouncePlayer = true; //!server.isOverSampleLimit || server.online != server.lastOnline;
                             if (shouldAnnouncePlayer && newPlayers.length) {
 
                                 join(newPlayers.map((p) => {
