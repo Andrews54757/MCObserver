@@ -599,6 +599,7 @@ function initializeServer(config) {
         attempts: 0,
         lastOnline: 0,
         checks: 0,
+        isOverSampleLimit: false,
         players: new Map(),
         oldplayers: new Map(),
         playersSeen: new Map(),
@@ -833,6 +834,7 @@ function mainLoop() {
                             server.sample = data.players.sample;
                             server.icon = data.favicon;
                             server.description = data.description;
+                            server.isOverSampleLimit = data.players.sample && data.players.sample.length < server.online;
                             server.checks++;
                             var newPlayers = [];
                             var leavePlayers = server.leavePlayers;
@@ -880,7 +882,7 @@ function mainLoop() {
                             }
                             server.players.forEach((player) => {
                                 var hasSeenPlayer = player.foundIn == server.checks;
-                                if (data.players.sample && data.players.sample.length < server.online) {
+                                if (server.isOverSampleLimit) {
                                     hasSeenPlayer = true;
                                     if (server.playersSeen.size == server.online) {
                                         hasSeenPlayer = server.playersSeen.has(player.id);
@@ -909,7 +911,8 @@ function mainLoop() {
                             if (server.playersSeen.size >= server.online)
                                 server.playersSeen.clear();
                             
-                            if (newPlayers.length) {
+                            var shouldAnnouncePlayer = !server.isOverSampleLimit || server.online != server.lastOnline;
+                            if (shouldAnnouncePlayer && newPlayers.length) {
 
                                 join(newPlayers.map((p) => {
                                     log(p.name + " has joined " + server.config.name, server)
@@ -918,9 +921,8 @@ function mainLoop() {
 
 
                             } else {
-
-
-                                if (leavePlayers.length) {
+                                
+                                if (shouldAnnouncePlayer && leavePlayers.length) {
                                     leave(leavePlayers.map((p) => {
                                         log(p.name + " has left " + server.config.name, server, leavePlayers)
                                         return p.name
