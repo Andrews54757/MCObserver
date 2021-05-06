@@ -163,7 +163,7 @@ if ('serviceWorker' in navigator) {
 
 function checkNotificationPermissions() {
     if (Notification.permission !== "granted" && Notification.permission !== "denied") {
-        alert("We first need notification permissions to alert you when people join the servers your watching! Don't worry, it will only take one tick...");
+       // alert("We first need notification permissions to alert you when people join the servers your watching! Don't worry, it will only take one tick...");
         Notification.requestPermission().then(function (permission) {
             // If the user accepts, let's create a notification
             if (permission === "granted") {
