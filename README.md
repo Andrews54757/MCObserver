@@ -4,7 +4,7 @@ Observe Minecraft servers, and get audio and visual notifications when people jo
 
 Note: Player-specific notifications will not work if the server has more than 12 players.
 
-https://andrews54757.github.io/MCObserver/
+https://mcobserver.com/
 
 Main page:
 <img width="1370" alt="Screen Shot" src="https://user-images.githubusercontent.com/13282284/76056985-04236780-5f46-11ea-94b8-8de9db2fb36c.png">
