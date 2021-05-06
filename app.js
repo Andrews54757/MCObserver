@@ -211,6 +211,7 @@ var sortableList = new Sortable(serverListElement, {
     animation: 150,
     ghostClass: 'reorder-highlight',
     dragClass: "sortable-drag",
+    filter: ".removeBtn",
     onEnd: function(/**Event*/evt) {
 		updateServerOrder(evt)
 	}
