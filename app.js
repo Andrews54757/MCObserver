@@ -194,7 +194,11 @@ var statistics = {
     averagePing: 0,
     playersJoined: 0,
     playersLeft: 0,
-    totalServersAdded: 0
+    serversAdded: 0,
+    serversRemoved: 0,
+    serversRenamed: 0,
+    serversMoved: 0
+
 }
 var joinAudio = new Audio("ding.mp3");
 var leaveAudio = new Audio("error.wav");
@@ -262,6 +266,7 @@ function saveStats() {
 
 function updateServerOrder(evt) {
   //  console.log(evt);
+   statistics.serversMoved++;
    var item = config.servers[evt.oldIndex];
    config.servers.splice(evt.oldIndex,1);
    config.servers.splice(evt.newIndex,0,item);
@@ -269,6 +274,8 @@ function updateServerOrder(evt) {
    saveConfig();
 }
 function removeServer(server) {
+
+    statistics.serversRemoved++;
 
     serverListElement.removeChild(server.elements.card)
     var ind = servers.indexOf(server);
@@ -307,7 +314,7 @@ function addServer(name, address, port) {
         slvl: 3,
         id: config.id++
     }
-    statistics.totalServersAdded++;
+    statistics.serversAdded++;
     config.servers.push(server);
     initializeServer(server, true)
     saveConfig();
