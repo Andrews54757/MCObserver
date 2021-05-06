@@ -10,7 +10,7 @@ Main page:
 <img width="1370" alt="Screen Shot" src="https://user-images.githubusercontent.com/13282284/76056985-04236780-5f46-11ea-94b8-8de9db2fb36c.png">
 
 Server tracker:
-<img width="1374" alt="Screen Shot" src="https://user-images.githubusercontent.com/13282284/107289644-5660e880-6a33-11eb-8751-43585ee6f407.png">
+<img width="1530" alt="Screen Shot" src="https://user-images.githubusercontent.com/13282284/117255175-57799a00-ae17-11eb-87dd-7e5210f941c5.png">
 
 Mobile-friendly:
 <img width="187" alt="Screen Shot" src="https://user-images.githubusercontent.com/13282284/107289656-595bd900-6a33-11eb-846d-61d105fb044c.png">
