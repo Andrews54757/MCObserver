@@ -199,10 +199,10 @@ var pages = {
         list: document.getElementById("listservers"),
         bottom: document.getElementById("bottommenuservers")
     },
-    players: {
-        page: document.getElementById("playerspage"),
-        list: document.getElementById("listplayers"),
-        bottom: document.getElementById("bottommenuplayers")
+    stats: {
+        page: document.getElementById("statspage"),
+        list: document.getElementById("liststats"),
+        bottom: document.getElementById("bottommenustats")
     },
     settings: {
         page: document.getElementById("settingspage"),
@@ -329,8 +329,55 @@ function createServerElements(server) {
     var status = document.createElement("div");
     status.className = "status";
 
+    var connectionspan = document.createElement("span");
+    connectionspan.className = "pingbars tooltip";
+    var connectiontooltip = document.createElement("div");
+    connectiontooltip.className = "tooltiptext";
+    
+    var bars = [];
+    for (var i = 0; i < 5; i++) {
+        var pingbar = document.createElement("span");
+        pingbar.className = "pingbar"
+        connectionspan.appendChild(pingbar)
+        bars.push(pingbar);
+    }
+    connectionspan.appendChild(connectiontooltip);
+    status.appendChild(connectionspan);
+
+    function updatePingStatus(ping) {
+        var count = 0;
+        if (ping < 0) {
+            count = 0;
+        } else if (ping < 150) {
+            count = 5;
+        } else if (ping < 300) {
+            count = 4;
+        } else if (ping < 600) {
+            count = 3;
+        } else if (ping < 1000) {
+            count = 2;
+        } else {
+            count = 1;
+        }
+
+        if (ping < 0) {
+            connectiontooltip.textContent = "Offline";
+        } else {
+            connectiontooltip.textContent = ping + "ms";
+        }
+
+        bars.forEach((bar, i)=>{
+            if (i < count) {
+                bar.classList.remove("disabled");
+            } else
+                bar.classList.add("disabled");
+
+        })
+    }
+
     var statusspan = document.createElement("span");
     status.appendChild(statusspan)
+
 
     var playerspan = document.createElement('span');
     status.appendChild(playerspan);
@@ -359,6 +406,9 @@ function createServerElements(server) {
 ]
         },
         options: {
+            layout: {
+                padding: 10
+            },
             legend: {
                 display: false
             },
@@ -580,7 +630,8 @@ function createServerElements(server) {
         playerText: playerText,
         currentPlayers: currentPlayers,
         pastText: pastText,
-        pastPlayers: pastPlayers
+        pastPlayers: pastPlayers,
+        updatePingStatus: updatePingStatus
     }
 
 
@@ -593,6 +644,7 @@ function initializeServer(config) {
         version: "",
         online: 0,
         max: 0,
+        latency: 0,
         icon: "",
         description: "",
         lastAttempt: 0,
@@ -620,7 +672,7 @@ function updateServer(server) {
     if (newicon != server.elements.icon.src) server.elements.icon.src = newicon;
     server.elements.statusspan.textContent = server.status;
     if (server.status == "ONLINE") {
-
+        server.elements.updatePingStatus(server.latency);
         server.players.forEach((player) => {
             player.elements.playtime.textContent = formatTime(Math.floor((Date.now() - player.joinedIn) / 1000))
         });
@@ -680,6 +732,7 @@ function updateServer(server) {
 
         server.elements.lineChart.update()
     } else {
+        server.elements.updatePingStatus(-1);
         server.elements.statusspan.style.color = "rgb(100,0,0)";
         server.elements.playerspan.textContent = "";
     }
@@ -830,7 +883,7 @@ function mainLoop() {
                             server.max = data.players.max;
                             server.online = data.players.online;
                             server.description = data.description;
-                            server.latency = data.latency;
+                            server.latency = result.latency;
                             server.sample = data.players.sample;
                             server.icon = data.favicon;
                             server.description = data.description;

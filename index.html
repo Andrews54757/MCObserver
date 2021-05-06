@@ -73,6 +73,10 @@
             padding: 0px 8px;
             border: 1px solid rgb(200, 200, 200);
         }
+
+        #topserverinput {
+            margin-left: 10px;
+        }
         
         .serverinput:focus {
             outline: none;
@@ -178,7 +182,7 @@
         }
         
         #actualcontent .serverinput {
-            width: calc(100% - 140px);
+            width: calc(100% - 150px);
         }
         
         #actualcontent .bottommenu {
@@ -226,7 +230,7 @@
         }
         
         .serverlist .servercard {
-            width: 300px;
+            width: calc(20% - 20px);
             margin: 10px;
             padding: 0px;
             display: inline-block;
@@ -432,14 +436,19 @@
             right: 0px;
             transform: translate(0px, -50%);
         }
-        
-        @media screen and (max-width: 1350px) {
+        @media screen and (max-width: 2000px) {
+            .serverlist .servercard {
+                width: calc(25% - 20px);
+            }
+        }
+
+        @media screen and (max-width: 1500px) {
             .serverlist .servercard {
                 width: calc(33% - 20px);
             }
         }
         
-        @media screen and (max-width: 950px) {
+        @media screen and (max-width: 1100px) {
             .serverlist .servercard {
                 width: calc(50% - 20px);
             }
@@ -475,6 +484,90 @@
             }
         }
 
+
+    
+    .pingbars {
+        position: relative;
+        width: 20px;
+        height: 12px;
+        display: inline-block;
+        margin-right: 5px;
+        user-select: none;
+    }
+    .pingbars .pingbar {
+        position: relative;
+        display: inline-block;
+        bottom: 0;
+        width: 2px;
+        background: rgb(41,253,58);
+        margin-left: 1px;
+        border-right: 1px solid rgb(17,134,28);
+        border-bottom: 1px solid rgb(17,134,28);
+    }
+
+    .pingbars .pingbar.disabled {
+        background: rgb(91,91,91);
+        border-right: 1px solid rgb(56,56,56);
+        border-bottom: 1px solid rgb(56,56,56);
+    }
+
+    .pingbars .pingbar:nth-child(1) {
+        height: 20%;
+        margin-left: 0px;
+    }
+    .pingbars .pingbar:nth-child(2) {
+        height: 40%;
+    }
+    .pingbars .pingbar:nth-child(3) {
+        height: 60%;
+    }
+    .pingbars .pingbar:nth-child(4) {
+        height: 80%;
+    }
+    .pingbars .pingbar:nth-child(5) {
+        height: 100%;
+    }
+    
+    .tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 80px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+ 
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+.tooltip .tooltiptext {
+  width: 80px;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -40px; /* Use half of the width (120/2 = 60), to center the tooltip */
+}
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+.tooltip .tooltiptext::after {
+  content: " ";
+  position: absolute;
+  top: 100%; /* At the bottom of the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+}
     </style>
 </head>
 
@@ -506,7 +599,7 @@
 
             </div>
         </div>
-        <div class="copyright">MCObserver — Hastily Built Block by Block — ©2020 Andrews54757 - <a href="https://github.com/Andrews54757/mcobserver">Source Code</a><br>
+        <div class="copyright">MCObserver — Hastily Built Block by Block — ©2021 Andrews54757 - <a href="https://github.com/Andrews54757/mcobserver">Source Code</a><br>
             <p style="font-size: 6px">"Minecraft" is a trademark of Mojang. This is NOT OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG</p>
 
         </div>
@@ -516,13 +609,13 @@
         <header>
             <div>
                 <img class="headerimg" src="Observer300.png">
-                <div class="headertitle">MCObserver<br>v0.1.0</div>
+                <div class="headertitle">MCObserver<br>v0.1.5</div>
             </div>
 
             <ul class="pagelist">
 
                 <li id="listservers" class="item selected" data-value="servers">Servers</li>
-                <li id="listplayers" class="item" data-value="players">Players</li>
+                <li id="liststats" class="item" data-value="stats">Statistics</li>
                 <li id="listsettings" class="item" data-value="settings">Settings</li>
 
             </ul>
@@ -539,7 +632,7 @@
 
         </div>
 
-        <div id="playerspage" class="content">
+        <div id="statspage" class="content">
 
             <h2> Player statistics coming soon! (/s)</h2>
         </div>
@@ -567,9 +660,9 @@
                 <div id="bottommenuservers" class="option selected" data-value="servers" style="width: 32%" title="Server List">
                     <i class="fa fa-server"></i>
                 </div>
-                <div id="bottommenuplayers" class="option" data-value="players" style="width: 32%" title="Player List">
+                <div id="bottommenustats" class="option" data-value="stats" style="width: 32%" title="Statistics">
 
-                    <i class="fa fa-users"></i>
+                    <i class="fa fa-bar-chart"></i>
                 </div>
                 <div id="bottommenusettings" class="option" data-value="settings" style="width: 32%" title="Settings">
                     <i class="fa fa-sliders"></i>
