@@ -181,8 +181,8 @@ var config = {
     soundLevel: 2, // 0 - none, 1 - friends list only, 2 - all
     notifyLeave: true,
     servers: [],
-    notifyList: []
-
+    notifyList: [],
+    id: 1
 }
 
 var joinAudio = new Audio("ding.mp3");
@@ -195,7 +195,10 @@ var serverListElement = document.getElementById("serverlist");
 var sortableList = new Sortable(serverListElement, {
     animation: 150,
     ghostClass: 'reorder-highlight',
-    dragClass: "sortable-drag"
+    dragClass: "sortable-drag",
+    onEnd: function(/**Event*/evt) {
+		updateServerOrder(evt)
+	}
 });
 var pages = {
     servers: {
@@ -243,7 +246,14 @@ function updateConfig() {
     localStorage.setItem("config", JSON.stringify(config));
 }
 
+function updateServerOrder(evt) {
+  //  console.log(evt);
+   var item = config.servers[evt.oldIndex];
+   config.servers.splice(evt.oldIndex,1);
+   config.servers.splice(evt.newIndex,0,item);
 
+   updateConfig();
+}
 function removeServer(server) {
 
     serverListElement.removeChild(server.elements.card)
@@ -278,7 +288,8 @@ function addServer(name, address, port) {
         address: address,
         port: port,
         nlvl: 3, // 3 is default
-        slvl: 3
+        slvl: 3,
+        id: config.id++
     }
     config.servers.push(server);
     initializeServer(server)
@@ -309,6 +320,8 @@ function formatTime(d) {
 function createServerElements(server) {
     var card = document.createElement("div");
     card.className = "servercard"
+
+    //card.dataset.serverid = server.config.id;
 
     var cardcontainer = document.createElement("div");
     cardcontainer.className = "container";
@@ -1152,6 +1165,7 @@ if (configstr) {
 
     }
     config.servers.forEach((server) => {
+      //  if (!server.id) server.id = config.id++;
         initializeServer(server);
     })
 
