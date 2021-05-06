@@ -12,6 +12,7 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     <script src="moment.js"></script>
     <script src="Chart.min.js"></script>
+    <script src="Sortable.js"></script>
     <title>Minecraft Server Observer</title>
     <style>
         @font-face {
@@ -60,6 +61,15 @@
             transform: translate(0px, -50%);
         }
         
+        .reorder-highlight {
+            filter: brightness(80%);
+        }
+
+        .sortable-drag {
+            display: none;
+            opacity: 0;
+        }
+
         #loadingpage .title {
             font-size: 20px;
             font-family: "minecraft", "Raleway", Arial;

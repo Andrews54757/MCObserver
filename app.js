@@ -192,7 +192,11 @@ joinAudio.loop = false;
 leaveAudio.loop = false;
 var servers = [];
 var serverListElement = document.getElementById("serverlist");
-
+var sortableList = new Sortable(serverListElement, {
+    animation: 150,
+    ghostClass: 'reorder-highlight',
+    dragClass: "sortable-drag"
+});
 var pages = {
     servers: {
         page: document.getElementById("serverpage"),
