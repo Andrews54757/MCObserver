@@ -407,7 +407,7 @@ function createServerElements(server) {
         },
         options: {
             layout: {
-                padding: 10
+                padding: 5
             },
             legend: {
                 display: false
