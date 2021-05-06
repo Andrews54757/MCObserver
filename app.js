@@ -877,7 +877,7 @@ function mainLoop() {
     });
 
     if (query.length != 0) {
-        console.log("Querying " + query.length + " servers")
+       // console.log("Querying " + query.length + " servers")
         request(SERVER_URL + "/multiquery?query=" + encodeURIComponent(JSON.stringify(query)), (err, req, body) => {
             if (!err && body) {
 
@@ -887,7 +887,7 @@ function mainLoop() {
                     toQuery.forEach((server, i) => {
                         var result = dt.result[i];
                         var data = result.data;
-                        console.log(result)
+                        //console.log(result)
                         if (result.error) {
                             server.lastAttempt = Date.now();
                             server.attempts++;
