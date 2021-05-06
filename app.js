@@ -292,7 +292,7 @@ function addServer(name, address, port) {
         id: config.id++
     }
     config.servers.push(server);
-    initializeServer(server)
+    initializeServer(server, true)
     updateConfig();
 }
 
@@ -654,7 +654,7 @@ function createServerElements(server) {
 
 }
 
-function initializeServer(config) {
+function initializeServer(config, focusNameEdit) {
     var server = {
         config: config,
         status: "N/A",
@@ -679,6 +679,9 @@ function initializeServer(config) {
     updateServer(server)
     serverListElement.appendChild(server.elements.card)
     servers.push(server)
+    if (focusNameEdit) {
+        server.elements.nameinput.focus();
+    }
 }
 
 function updateServer(server) {
