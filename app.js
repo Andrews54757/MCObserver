@@ -17,6 +17,7 @@ var SERVER_URL = "https://minecraft-status-observer.herokuapp.com";
 
 var SERVER_STATUS = "";
 
+
 window.request = function ( /**/ ) {
     var url = arguments[0],
         post = undefined,
@@ -184,7 +185,17 @@ var config = {
     notifyList: [],
     id: 1
 }
-
+var statistics = {
+    timeUsed: 0,
+    timePlayed: 0,
+    notificationsShown: 0,
+    bellsRung: 0,
+    hornsBlowed: 0,
+    averagePing: 0,
+    playersJoined: 0,
+    playersLeft: 0,
+    totalServersAdded: 0
+}
 var joinAudio = new Audio("ding.mp3");
 var leaveAudio = new Audio("error.wav");
 
@@ -241,9 +252,12 @@ $(".bottommenu .option, .pagelist .item").on('click', function () {
 
 });
 
-function updateConfig() {
-    console.log("Written config to localStorage")
-    localStorage.setItem("config", JSON.stringify(config));
+function saveConfig() {
+    console.log("Written config to storage")
+    localforage.setItem("config", config);
+}
+function saveStats() {
+    localforage.setItem("stats",statistics); 
 }
 
 function updateServerOrder(evt) {
@@ -252,7 +266,7 @@ function updateServerOrder(evt) {
    config.servers.splice(evt.oldIndex,1);
    config.servers.splice(evt.newIndex,0,item);
 
-   updateConfig();
+   saveConfig();
 }
 function removeServer(server) {
 
@@ -262,7 +276,7 @@ function removeServer(server) {
 
     ind = config.servers.indexOf(server.config);
     if (ind != -1) config.servers.splice(ind, 1);
-    updateConfig()
+    saveConfig()
 
     if (servers.length === 0) {
         $("#loadingpage").fadeIn();
@@ -271,12 +285,14 @@ function removeServer(server) {
 
 function playJoinAudio() {
     if (joinAudio.paused) {
+        statistics.bellsRung++;
         joinAudio.play();
     }
 }
 
 function playLeaveAudio() {
     if (leaveAudio.paused) {
+        statistics.hornsBlowed++;
         leaveAudio.play();
     }
 }
@@ -291,9 +307,10 @@ function addServer(name, address, port) {
         slvl: 3,
         id: config.id++
     }
+    statistics.totalServersAdded++;
     config.servers.push(server);
     initializeServer(server, true)
-    updateConfig();
+    saveConfig();
 }
 
 function formatTime(d) {
@@ -468,7 +485,7 @@ function createServerElements(server) {
 
         server.config.name = nameinput.value;
 
-        updateConfig();
+        saveConfig();
 
     });
 
@@ -512,7 +529,7 @@ function createServerElements(server) {
             lvl = 3;
         }
         server.config.nlvl = lvl;
-        updateConfig();
+        saveConfig();
     })
 
 
@@ -549,7 +566,7 @@ function createServerElements(server) {
         }
 
         server.config.slvl = lvl;
-        updateConfig();
+        saveConfig();
     })
 
 
@@ -706,7 +723,7 @@ function updateServer(server) {
 
         server.elements.playerspan.textContent = " - " + server.online + "/" + server.max + " Players"
 
-        var online = parseInt(server.online);
+        var online = server.online;
         if (server.elements.lineData.length > 2) {
 
             var moved = false;
@@ -717,7 +734,6 @@ function updateServer(server) {
             }
             if (moved && server.elements.lineData[server.elements.lineData.length - 1].y == online) {
                 server.elements.lineData[server.elements.lineData.length - 1].x = Date.now();
-
 
             } else {
                 if (moved) {
@@ -807,6 +823,7 @@ function log(str, server) {
 }
 
 function notify(str, server) {
+    statistics.notificationsShown++;
     var notification = new Notification("MCObserver - " + server.config.name, {
         icon: server.icon || "Observer300.png",
         body: str,
@@ -851,9 +868,14 @@ function createPlayerItem(playerObj) {
     }
 }
 
+var lastTime = Date.now();
 function mainLoop() {
     // console.log("main")
+    var now = Date.now();
 
+    var delta = now - lastTime;
+    lastTime = now;
+    statistics.timeUsed += delta;
     if (SERVER_STATUS != "online") {
 
         wakeBackend();
@@ -871,7 +893,8 @@ function mainLoop() {
         }
     })
 
-
+    saveStats();
+    
     var query = toQuery.map((s) => {
         return {
             "address": s.config.address,
@@ -887,6 +910,8 @@ function mainLoop() {
                 try {
                     var dt = JSON.parse(body);
 
+                    var totalPing = 0;
+                    var pingCount = 0;
                     toQuery.forEach((server, i) => {
                         var result = dt.result[i];
                         var data = result.data;
@@ -901,9 +926,14 @@ function mainLoop() {
                             server.status = "ONLINE"
                             server.version = data.version.name;
                             server.max = data.players.max;
-                            server.online = data.players.online;
+                            server.online = parseInt(data.players.online);
+                            if (server.online) {
+                                statistics.timePlayed += delta * server.online
+                            }
                             server.description = data.description;
                             server.latency = result.latency;
+                            totalPing += server.latency;
+                            pingCount++;
                             server.sample = data.players.sample;
                             server.icon = data.favicon;
                             server.description = data.description;
@@ -1014,6 +1044,12 @@ function mainLoop() {
                                 leavePlayers.length = 0;
 
                             }
+                            var diff = server.online - server.lastOnline;
+                            if (diff > 0) {
+                                statistics.playersJoined += diff;
+                            } else if (diff < 0) {
+                                statistics.playersLeft += -diff;
+                            }
                             server.lastOnline = server.online;
 
 
@@ -1023,6 +1059,10 @@ function mainLoop() {
 
                     })
 
+                    if (pingCount) {
+                        var averagePing = totalPing / pingCount;
+                        statistics.averagePing = averagePing*0.1 + statistics.averagePing*0.9;
+                    }
                 } catch (e) {
                     console.log(e);
                 }
@@ -1141,10 +1181,27 @@ function wakeBackend(attempt) {
 }
 wakeBackend(10);
 
+async function init() {
+var configstr = (await localforage.getItem("config"));
+var newstats = await localforage.getItem("stats");
+if (!configstr) {
+    configstr = localStorage.getItem("config");
+    if (configstr) {
+        configstr = JSON.parse(configstr);
+        localforage.setItem("config", configstr);
+        console.log("Retrieved data from legacy storage")
+    }
+}
 
-var configstr = localStorage.getItem("config");
+if (newstats) {
+    for (var name in statistics) {
+        if (newstats.hasOwnProperty(name)) {
+            statistics[name] = newstats[name];
+        }
+    }
+}
 if (configstr) {
-    var newconfig = JSON.parse(configstr);
+    var newconfig = configstr;
 
     for (var name in config) {
 
@@ -1172,8 +1229,10 @@ if (configstr) {
         initializeServer(server);
     })
 
-    console.log("Loaded " + config.servers.length + " servers from localStorage")
+    console.log("Loaded " + config.servers.length + " servers from Storage")
 }
+}
+init();
 
 function setupSettings() {
     var box = document.getElementById("defaultBoxSettings");
@@ -1205,7 +1264,7 @@ function setupSettings() {
             lvl = 2;
         }
         config.notificationsLevel = lvl;
-        updateConfig();
+        saveConfig();
     })
 
 
@@ -1238,7 +1297,7 @@ function setupSettings() {
         }
 
         config.soundLevel = lvl;
-        updateConfig();
+        saveConfig();
     })
 
 
@@ -1247,7 +1306,7 @@ function setupSettings() {
     doleavebox.checked = config.notifyLeave;
     doleavebox.addEventListener("change", () => {
         config.notifyLeave = doleavebox.checked;
-        updateConfig();
+        saveConfig();
     })
 
     var input = document.getElementById("friendsinput")
@@ -1349,7 +1408,7 @@ function setupSettings() {
 
 
         updateInput();
-        updateConfig();
+        saveConfig();
 
     });
 

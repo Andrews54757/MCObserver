@@ -16,7 +16,8 @@ const staticAssets = [
     "./moment.js",
     "./minecraft.png",
     "./Chart.min.js",
-    "./Sortable.js"
+    "./Sortable.js",
+    "./localforage.min.js"
 ];
 
 
