@@ -17,7 +17,10 @@ const staticAssets = [
     "./minecraft.png",
     "./Chart.min.js",
     "./Sortable.js",
-    "./localforage.min.js"
+    "./localforage.min.js",
+    "./style.css",
+    "./Blocks.png",
+    "./Items.png"
 ];
 
 

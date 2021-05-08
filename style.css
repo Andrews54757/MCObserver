@@ -1,1 +1,599 @@
+@font-face {
+	font-family: "Minecraft";
+	src: url("./fonts/minecraft.eot");
+	/* IE9 Compat Modes */
+	src: url("./fonts/minecraft.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+	url("./fonts/minecraft.otf") format("opentype"), /* Open Type Font */
+	url("./fonts/minecraft.svg") format("svg"), /* Legacy iOS */
+	url("./fonts/minecraft.ttf") format("truetype"), /* Safari, Android, iOS */
+	url("./fonts/minecraft.woff") format("woff"), /* Modern Browsers */
+	url("./fonts/minecraft.woff2") format("woff2");
+	/* Modern Browsers */
+	font-weight: normal;
+	font-style: normal;
+}
 
+body {
+	background-color: rgb(250, 248, 245);
+	min-height: 100%;
+	font-family: "minecraft", "Raleway", Arial;
+	overscroll-behavior: none;
+}
+
+#loadingpage {
+	position: fixed;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	z-index: 100000;
+	background-color: cornsilk;
+}
+
+#loadingpage .icon {
+	position: absolute;
+	left: 0%;
+	top: 50%;
+	transform: translate(0%, -50%);
+	width: 40%;
+}
+
+#loadingpage .content {
+	position: absolute;
+	left: 43%;
+	top: 50%;
+	transform: translate(0px, -50%);
+}
+
+.reorder-highlight {
+	filter: brightness(80%);
+}
+
+.sortable-drag {
+	display: none;
+	opacity: 0;
+}
+
+#loadingpage .title {
+	font-size: 20px;
+	font-family: "minecraft", "Raleway", Arial;
+}
+
+.serverinput {
+	font-size: 15px;
+	font-family: "minecraft", "Raleway", Arial;
+	width: 400px;
+	height: 35px;
+	padding: 0px 8px;
+	border: 1px solid rgb(200, 200, 200);
+}
+
+#topserverinput {
+	margin-left: 10px;
+}
+
+.serverinput:focus {
+	outline: none;
+	height: 40px;
+	margin: 0px;
+}
+
+.inputbutton {
+	background-color: rgb(225, 225, 225);
+	font-size: 15px;
+	font-family: "minecraft", "Raleway", Arial;
+	cursor: pointer;
+	text-align: center;
+	user-select: none;
+	line-height: 35px;
+	height: 35px;
+	padding: 0px 15px;
+	display: inline-block;
+	border: 1px solid rgb(200, 200, 200);
+}
+
+.inputbutton:hover {
+	color: rgb(150, 50, 50);
+}
+
+.iconbutton {
+	background-color: transparent;
+	border: 1px solid rgb(50, 50, 50);
+	border-radius: 5px;
+	font-size: 15px;
+	font-family: "minecraft", "Raleway", Arial;
+	cursor: pointer;
+	text-align: center;
+	user-select: none;
+	padding: 5px 15px;
+	display: inline-block;
+	border: 1px solid rgb(200, 200, 200);
+}
+
+.iconbutton:hover {
+	color: rgb(150, 50, 50);
+}
+
+.iconbutton img {
+	height: 30px;
+}
+
+#loadingchoicebox {
+	font-family: "minecraft", "Raleway", Arial;
+}
+
+.copyright {
+	font-family: "minecraft", "Raleway", Arial;
+	font-size: 12px;
+	position: absolute;
+	bottom: 5px;
+	left: 0px;
+	right: 0px;
+	text-align: center;
+}
+
+#actualcontent {}
+
+#actualcontent header {
+	position: fixed;
+	z-index: 10000;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	height: 80px;
+	background-color: rgb(40, 40, 40);
+}
+
+.headerimg {
+	position: absolute;
+	top: 50%;
+	left: 20px;
+	height: 60px;
+	transform: translate(0%, -50%);
+}
+
+.headertitle {
+	position: absolute;
+	left: 85px;
+	top: 50%;
+	transform: translate(0%, -50%);
+	color: rgb(230, 230, 230);
+	font-family: "minecraft", "Raleway", Arial;
+	font-size: 13px;
+}
+
+#actualcontent {
+	padding-top: 100px;
+}
+
+#actualcontent .content {
+	padding: 5px 10px;
+	display: none;
+}
+
+#settingspage.content {
+	position: relative;
+	padding-bottom: 50px;
+}
+
+#actualcontent .content.active {
+	display: block;
+}
+
+#actualcontent .serverinput {
+	width: calc(100% - 150px);
+}
+
+#actualcontent .bottommenu {
+	position: fixed;
+	z-index: 10000;
+	bottom: 0px;
+	display: none;
+	left: 0px;
+	right: 0px;
+	height: 70px;
+	background-color: rgb(40, 40, 40);
+}
+
+.iconlist {
+	position: absolute;
+	width: 100%;
+	top: 0px;
+	left: 50%;
+	user-select: none;
+	transform: translate(-50%);
+}
+
+.iconlist .option {
+	text-align: center;
+	display: inline-block;
+	cursor: pointer;
+	height: 70px;
+}
+
+.iconlist .option.selected {
+	background-color: black;
+}
+
+.iconlist .option i {
+	color: rgb(230, 230, 230);
+	font-size: 40px;
+	line-height: 70px;
+}
+
+.serverlist {
+	display: flex;
+	justify-content: flex-start;
+	margin-top: 10px;
+	flex-wrap: wrap;
+}
+
+.serverlist .servercard {
+	width: calc(20% - 20px);
+	margin: 10px;
+	padding: 0px;
+	display: inline-block;
+}
+
+#defaultBoxSettings {
+	padding: 5px;
+	display: inline-block;
+	background-color: rgb(240, 240, 240);
+	border: 1px solid rgba(30, 30, 30, 0.3);
+}
+
+#friendsinput {
+	padding: 5px;
+	background-color: rgb(240, 240, 240);
+	min-height: 500px;
+	border: 1px solid rgba(30, 30, 30, 0.3);
+}
+
+.serverlist .servercard .container {
+	position: relative;
+	background-color: rgb(240, 240, 240);
+	border: 1px solid rgba(30, 30, 30, 0.3);
+	width: 100%;
+	padding: 0px;
+	padding-top: 80%;
+}
+
+.serverlist .servercard .container .cardcontent {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+}
+
+.serverlist .servercard .icon {
+	width: 60px;
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}
+
+.serverlist .servercard .status {
+	font-size: 13px;
+	position: absolute;
+	left: 80px;
+	user-select: none;
+	top: 41px;
+	cursor: pointer;
+	padding-bottom: 10px;
+}
+
+.removeBtn {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	color: rgb(150, 0, 0);
+	cursor: pointer;
+	padding: 5px;
+}
+
+.nameinput {
+	padding: 2px 5px;
+	position: absolute;
+	font-size: 18px;
+	top: 16px;
+	left: 75px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	background-color: transparent;
+	border: 0px;
+	font-family: "minecraft", "Raleway", Arial;
+	overflow: hidden;
+	max-width: calc(100% - 90px);
+}
+
+.chart {
+	position: relative;
+	top: 70px;
+	right: 5px;
+	bottom: 80px;
+}
+
+.nameinput:focus {
+	outline: none;
+	text-overflow: clip;
+	background-color: white;
+}
+
+.iconSetting {
+	text-align: center;
+	vertical-align: middle;
+	padding: 2px 5px;
+	color: rgb(30, 30, 30);
+	cursor: pointer;
+	display: inline-block;
+	user-select: none;
+}
+
+.settingIcon {
+	height: 30px;
+	line-height: 30px;
+	padding-right: 5px;
+	margin-right: 5px;
+	border-right: 1px solid rgb(180, 180, 180);
+}
+
+.iconSetting:hover {
+	color: rgb(150, 50, 50);
+}
+
+.settingSelect {
+	display: inline-block;
+	font-size: 15px;
+	line-height: 30px;
+}
+
+.cardSettings {
+	position: absolute;
+	bottom: 5px;
+	left: 0px;
+	right: 0px;
+	text-align: center;
+}
+
+.cardSettings .iconSetting {
+	margin: 0px 10px;
+}
+
+#defaultBoxSettings .iconSetting {
+	margin: 0px 10px;
+}
+
+.pagelist {
+	position: absolute;
+	bottom: 0px;
+	right: 20px;
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+.pagelist li.item {
+	padding: 5px 12px;
+	user-select: none;
+	cursor: pointer;
+	text-align: center;
+	vertical-align: bottom;
+	font-family: "minecraft", "Raleway", Arial;
+	font-size: 15px;
+	color: rgb(230, 230, 230);
+	display: inline-block;
+}
+
+.pagelist li.item.selected {
+	cursor: auto;
+	background-color: rgb(250, 248, 245);
+	color: rgb(30, 30, 30);
+}
+
+.pagelist li.item:hover {
+	color: rgb(150, 50, 50);
+}
+
+.playerListContainer {
+	padding: 5px;
+	position: absolute;
+	top: 60px;
+	background-color: white;
+	border: 1px solid rgba(40, 40, 40, 0.5);
+	left: 0px;
+	right: 0px;
+	max-height: calc(100% - 80px);
+	overflow: scroll;
+}
+
+.playerListContainer .playeritem {
+	font-size: 15px;
+	height: 30px;
+	position: relative;
+	border-top: 1px solid rgb(200, 200, 200);
+}
+
+.playeritem img {
+	height: 20px;
+	position: absolute;
+	left: 0px;
+	top: 50%;
+	transform: translate(0px, -50%);
+}
+
+.playeritem .username {
+	position: absolute;
+	left: 25px;
+	top: 50%;
+	transform: translate(0px, -50%);
+}
+
+.playeritem .playtime {
+	position: absolute;
+	top: 50%;
+	right: 0px;
+	transform: translate(0px, -50%);
+}
+
+@media screen and (max-width: 2000px) {
+	.serverlist .servercard {
+		width: calc(25% - 20px);
+	}
+}
+
+@media screen and (max-width: 1500px) {
+	.serverlist .servercard {
+		width: calc(33% - 20px);
+	}
+}
+
+@media screen and (max-width: 1100px) {
+	.serverlist .servercard {
+		width: calc(50% - 20px);
+	}
+}
+
+@media screen and (max-width: 600px) {
+	.serverlist .servercard {
+		width: calc(100% - 20px);
+	}
+}
+
+@media screen and (max-width: 700px) {
+	#loadingpage .icon {
+		position: absolute;
+		left: 50%;
+		top: 10px;
+		transform: translate(-50%, 0%);
+		width: 90%;
+	}
+	#loadingpage .content {
+		background-color: rgba(200, 200, 200, 0.8);
+		padding: 30px;
+		position: absolute;
+		left: 50%;
+		width: 75%;
+		top: 50px;
+		transform: translate(-50%, 0);
+	}
+	#loadinginput {
+		width: calc(100% - 140px);
+	}
+	#actualcontent .bottommenu {
+		display: block;
+	}
+	.pagelist {
+		display: none;
+	}
+}
+
+.pingbars {
+	position: relative;
+	width: 20px;
+	height: 12px;
+	display: inline-block;
+	margin-right: 5px;
+	user-select: none;
+}
+
+.pingbars .pingbar {
+	position: relative;
+	display: inline-block;
+	bottom: 0;
+	width: 2px;
+	background: rgb(41, 253, 58);
+	margin-left: 1px;
+	border-right: 1px solid rgb(17, 134, 28);
+	border-bottom: 1px solid rgb(17, 134, 28);
+}
+
+.pingbars .pingbar.disabled {
+	background: rgb(91, 91, 91);
+	border-right: 1px solid rgb(56, 56, 56);
+	border-bottom: 1px solid rgb(56, 56, 56);
+}
+
+.pingbars .pingbar:nth-child(1) {
+	height: 20%;
+	margin-left: 0px;
+}
+
+.pingbars .pingbar:nth-child(2) {
+	height: 40%;
+}
+
+.pingbars .pingbar:nth-child(3) {
+	height: 60%;
+}
+
+.pingbars .pingbar:nth-child(4) {
+	height: 80%;
+}
+
+.pingbars .pingbar:nth-child(5) {
+	height: 100%;
+}
+
+.tooltip {
+	position: relative;
+	display: inline-block;
+	/* If you want dots under the hoverable text */
+}
+
+
+/* Tooltip text */
+
+.tooltip .tooltiptext {
+	visibility: hidden;
+	width: 80px;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	padding: 5px 0;
+	border-radius: 6px;
+	/* Position the tooltip text - see examples below! */
+	position: absolute;
+	z-index: 1;
+}
+
+.tooltip .tooltiptext {
+	width: 80px;
+	bottom: 100%;
+	left: 50%;
+	margin-left: -40px;
+	/* Use half of the width (120/2 = 60), to center the tooltip */
+}
+
+
+/* Show the tooltip text when you mouse over the tooltip container */
+
+.tooltip:hover .tooltiptext {
+	visibility: visible;
+}
+
+.tooltip .tooltiptext::after {
+	content: " ";
+	position: absolute;
+	top: 100%;
+	/* At the bottom of the tooltip */
+	left: 50%;
+	margin-left: -5px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: black transparent transparent transparent;
+}
+
+.content h2 {
+	margin-top: 0px;
+}
+
+.statsitem td {
+    padding: 2px 10px;
+}
+.statsitem .statsicon {
+    min-width: 32px;
+}
+.statsitem .statsvalue {
+    
+}

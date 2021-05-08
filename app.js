@@ -130,6 +130,9 @@ buttonInstall.addEventListener('click', (e) => {
 });
 
 */
+var version = "0.1.5";
+console.log('\n %c %c %cMC%cObserver %c-%c ' + version + ' %c By Andrews54757 \n', 'background: url(https://mcobserver.com/Observer192.png) no-repeat; background-size: 16px 16px; padding: 2px 6px; margin-right: 4px', 'background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: #afbc2a; background: rgb(50,50,50); padding:5px 0;', 'color: black; background: #e9e9e9; padding:5px 0;')
+console.log("Hello curious one! Welcome to MCObserver! Feel free to look around.")
 
 window.addEventListener('appinstalled', (evt) => {
     console.log('app installed');
@@ -185,21 +188,194 @@ var config = {
     notifyList: [],
     id: 1
 }
-var statistics = {
-    timeUsed: 0,
-    timePlayed: 0,
-    notificationsShown: 0,
-    bellsRung: 0,
-    hornsBlowed: 0,
-    averagePing: 0,
-    playersJoined: 0,
-    playersLeft: 0,
-    serversAdded: 0,
-    serversRemoved: 0,
-    serversRenamed: 0,
-    serversMoved: 0
 
+class Stat {
+    constructor(manager, name, value, icon, description, formatFunc) {
+        this.manager = manager;
+        this.name = name;
+        this.value = value || 0;
+        this.icon = icon;
+        this.description = description;
+        this.formatFunc = formatFunc;
+        this.valueElement = null;
+    }
+    getValue() {
+        return this.value;
+    }
+    getValueFormatted() {
+        return this.formatFunc ? this.formatFunc(this.getValue()) : this.getValue().toString();
+    }
+    setValue(value) {
+        this.value = value;
+        this.onChanged();
+    }
+    increment() {
+        this.value++;
+        this.onChanged();
+    }
+    add(num) {
+        this.value += num;
+        this.onChanged();
+    }
+    onChanged() {
+        if (this.valueElement) {
+            this.valueElement.textContent = this.getValueFormatted();
+        }
+        this.flagManager();
+    }
+    flagManager() {
+        this.manager.markForUpdate();
+    }
+    getName() {
+        return this.name;
+    }
+    getIcon() {
+        return this.icon;
+    }
+    getDescription() {
+        return this.description;
+    }
+    setValueElement(el) {
+        this.valueElement = el;
+    }
 }
+
+var SpriteSheets = {
+    items: {
+        url: "Items.png",
+        swidth: 32,
+        sheight: 32
+    },
+    blocks: {
+        url: "Blocks.png",
+        swidth: 32,
+        sheight: 32
+    }
+}
+class SpriteIcon {
+    constructor(SpriteSheet, x, y) {
+        this.x = x || 0;
+        this.y = y || 0;
+        this.spriteSheet = SpriteSheet;
+    }
+    createElement(eWidth, eHeight) {
+        var sheet = this.spriteSheet;
+        var span = document.createElement("span");
+        if (!sheet) return span;
+        var xratio = eWidth / sheet.swidth;
+        var yratio = eHeight / sheet.sheight;
+        span.className = "spriteicon";
+        span.style.backgroundImage = `url("${sheet.url}")`;
+        span.style.backgroundPosition = `-${this.x * eWidth}px -${this.y * eHeight}px`;
+        span.style.width = eWidth + "px";
+        span.style.height = eHeight + "px";
+        span.style.backgroundSize = `${xratio * 100}% ${yratio * 100}%`
+        span.style.backgroundRepeat = "no-repeat";
+        return span;
+    }
+}
+
+class StatisticsManager {
+    constructor() {
+        this.statistics = new Map();
+        this.markedForUpdate = false;
+    }
+    create(name, value, icon, description, formatFunc) {
+        var stat = new Stat(this, name, value, icon, description, formatFunc);
+        this.statistics.set(name, stat);
+        return stat;
+    }
+    get(name) {
+        return this.statistics.get(name);
+    }
+    asObject() {
+        var obj = {};
+        this.statistics.forEach(function (stat) {
+            obj[stat.getName()] = stat.getValue();
+        });
+        return obj;
+    }
+    saveStats() {
+        localforage.setItem("stats", this.asObject()); 
+    }
+    loadStatsFromObject(obj) {
+        this.statistics.forEach(function (stat) {
+            if (obj.hasOwnProperty(stat.getName())) {
+                stat.setValue(obj[stat.getName()]);
+            }
+        });
+    }
+    update() {
+        if (this.markedForUpdate)
+            this.saveStats();
+    }
+    markForUpdate() {
+        this.markedForUpdate = true;
+    }
+    setupStatsPage() {
+        var list = document.getElementById("statslist");
+        list.innerHTML = "";
+
+        this.statistics.forEach((stat)=>{
+            var item = document.createElement("tr");
+            item.className = "statsitem";
+
+            var icon;
+            if (stat.getIcon()) {
+                icon = stat.getIcon().createElement(32, 32);
+            } else {
+                icon = document.createElement("span");
+            }
+
+            var iconContainer = document.createElement("td");
+            iconContainer.classList = "statsicon"
+            iconContainer.appendChild(icon);
+           
+
+            var name = document.createElement("td");
+            name.className = "statsname tooltip";
+            name.textContent = stat.getName();
+
+            if (stat.getDescription()) {
+                var tooltip = document.createElement("div");
+                tooltip.className = "tooltiptext";
+                name.appendChild(tooltip);
+            }
+            
+
+
+            var value = document.createElement("td");
+            value.className = "statsvalue";
+
+            value.textContent = stat.getValueFormatted();
+
+            item.appendChild(iconContainer);
+            item.appendChild(name);
+            item.appendChild(value);
+            stat.setValueElement(value);
+            list.appendChild(item);
+
+        });
+    }
+}
+
+
+var statisticsManager = new StatisticsManager();
+statisticsManager.create("Used Time", 0, new SpriteIcon(SpriteSheets.items), "", (val)=>{ return formatTime(Math.floor(val/1000))});
+statisticsManager.create("Player Time", 0, new SpriteIcon(SpriteSheets.items), "", (val)=>{ return formatTime(Math.floor(val/1000))});
+statisticsManager.create("Notifications Shown", 0, new SpriteIcon(SpriteSheets.items));
+statisticsManager.create("Bells Rung", 0, new SpriteIcon(SpriteSheets.items));
+statisticsManager.create("Blurps Played", 0, new SpriteIcon(SpriteSheets.items));
+statisticsManager.create("Average Ping", 0, new SpriteIcon(SpriteSheets.items), "", (val)=> Math.floor(val*10)/10 + "ms");
+statisticsManager.create("Players Joined", 0, new SpriteIcon(SpriteSheets.items));
+statisticsManager.create("Players Left", 0, new SpriteIcon(SpriteSheets.items));
+statisticsManager.create("Servers Added", 0, new SpriteIcon(SpriteSheets.items));
+statisticsManager.create("Servers Removed", 0, new SpriteIcon(SpriteSheets.items));
+statisticsManager.create("Servers Renamed", 0, new SpriteIcon(SpriteSheets.items));
+statisticsManager.create("Servers Moved", 0, new SpriteIcon(SpriteSheets.items));
+
+statisticsManager.setupStatsPage();
+
 var joinAudio = new Audio("ding.mp3");
 var leaveAudio = new Audio("error.wav");
 
@@ -261,13 +437,11 @@ function saveConfig() {
     console.log("Written config to storage")
     localforage.setItem("config", config);
 }
-function saveStats() {
-    localforage.setItem("stats",statistics); 
-}
+
 
 function updateServerOrder(evt) {
   //  console.log(evt);
-   statistics.serversMoved++;
+   statisticsManager.get("Servers Moved").increment();
    var item = config.servers[evt.oldIndex];
    config.servers.splice(evt.oldIndex,1);
    config.servers.splice(evt.newIndex,0,item);
@@ -276,7 +450,7 @@ function updateServerOrder(evt) {
 }
 function removeServer(server) {
 
-    statistics.serversRemoved++;
+    statisticsManager.get("Servers Removed").increment();
 
     serverListElement.removeChild(server.elements.card)
     var ind = servers.indexOf(server);
@@ -293,14 +467,14 @@ function removeServer(server) {
 
 function playJoinAudio() {
     if (joinAudio.paused) {
-        statistics.bellsRung++;
+        statisticsManager.get("Bells Rung").increment();
         joinAudio.play();
     }
 }
 
 function playLeaveAudio() {
     if (leaveAudio.paused) {
-        statistics.hornsBlowed++;
+        statisticsManager.get("Blurps Played").increment();
         leaveAudio.play();
     }
 }
@@ -315,7 +489,7 @@ function addServer(name, address, port) {
         slvl: 3,
         id: config.id++
     }
-    statistics.serversAdded++;
+    statisticsManager.get("Servers Added").increment();
     config.servers.push(server);
     initializeServer(server, true)
     saveConfig();
@@ -327,9 +501,14 @@ function formatTime(d) {
     var minutes = Math.floor(d / 60);
 
     var hours = Math.floor(minutes / 60);
+    var days = Math.floor((hours / 24)*10)/10;
+    if (days < 1) days = 0;
+    hours = hours % 24;
     minutes = minutes % 60;
 
-
+    if (days) {
+        return days + " day" + (days == 0) ? "" : "s";
+    } else
     if (hours) {
         return hours + ":" + (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
 
@@ -838,7 +1017,7 @@ function log(str, server) {
 }
 
 function notify(str, server) {
-    statistics.notificationsShown++;
+    statisticsManager.get("Notifications Shown").increment();
     var notification = new Notification("MCObserver - " + server.config.name, {
         icon: server.icon || "Observer300.png",
         body: str,
@@ -890,7 +1069,7 @@ function mainLoop() {
 
     var delta = now - lastTime;
     lastTime = now;
-    statistics.timeUsed += delta;
+    statisticsManager.get("Used Time").add(delta);
     if (SERVER_STATUS != "online") {
 
         wakeBackend();
@@ -908,7 +1087,7 @@ function mainLoop() {
         }
     })
 
-    saveStats();
+    statisticsManager.update();
     
     var query = toQuery.map((s) => {
         return {
@@ -943,7 +1122,7 @@ function mainLoop() {
                             server.max = data.players.max;
                             server.online = parseInt(data.players.online);
                             if (server.online) {
-                                statistics.timePlayed += delta * server.online
+                                statisticsManager.get("Player Time").add(delta * server.online)
                             }
                             server.description = data.description;
                             server.latency = result.latency;
@@ -1061,9 +1240,9 @@ function mainLoop() {
                             }
                             var diff = server.online - server.lastOnline;
                             if (diff > 0) {
-                                statistics.playersJoined += diff;
+                                statisticsManager.get("Players Joined").add(diff);
                             } else if (diff < 0) {
-                                statistics.playersLeft += -diff;
+                                statisticsManager.get("Players Left").add(-diff);
                             }
                             server.lastOnline = server.online;
 
@@ -1076,7 +1255,8 @@ function mainLoop() {
 
                     if (pingCount) {
                         var averagePing = totalPing / pingCount;
-                        statistics.averagePing = averagePing*0.1 + statistics.averagePing*0.9;
+                        var stat = statisticsManager.get("Average Ping");
+                        stat.setValue(averagePing*0.1 + stat.getValue()*0.9);
                     }
                 } catch (e) {
                     console.log(e);
@@ -1209,11 +1389,7 @@ if (!configstr) {
 }
 
 if (newstats) {
-    for (var name in statistics) {
-        if (newstats.hasOwnProperty(name)) {
-            statistics[name] = newstats[name];
-        }
-    }
+    statisticsManager.loadStatsFromObject(newstats);
 }
 if (configstr) {
     var newconfig = configstr;
