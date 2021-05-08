@@ -130,7 +130,8 @@ buttonInstall.addEventListener('click', (e) => {
 });
 
 */
-var version = "0.1.5";
+var version = "0.2.0";
+document.getElementById("version").textContent = "v" + version
 console.log('\n %c %c %cMC%cObserver %c-%c ' + version + ' %c By Andrews54757 \n', 'background: url(https://mcobserver.com/Observer192.png) no-repeat; background-size: 16px 16px; padding: 2px 6px; margin-right: 4px', 'background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: #afbc2a; background: rgb(50,50,50); padding:5px 0;', 'color: black; background: #e9e9e9; padding:5px 0;')
 console.log("Hello curious one! Welcome to MCObserver! Feel free to look around.")
 
@@ -242,14 +243,14 @@ class Stat {
 
 var SpriteSheets = {
     items: {
-        url: "Items.png",
+        url: "https://mcobserver.com/Items.png?3",
         swidth: 32,
         sheight: 32
     },
     blocks: {
-        url: "Blocks.png",
-        swidth: 32,
-        sheight: 32
+        url: "https://mcobserver.com/Blocks.png?3",
+        swidth: 16,
+        sheight: 16
     }
 }
 class SpriteIcon {
@@ -266,11 +267,13 @@ class SpriteIcon {
         var yratio = eHeight / sheet.sheight;
         span.className = "spriteicon";
         span.style.backgroundImage = `url("${sheet.url}")`;
-        span.style.backgroundPosition = `-${this.x * eWidth}px -${this.y * eHeight}px`;
-        span.style.width = eWidth + "px";
-        span.style.height = eHeight + "px";
-        span.style.backgroundSize = `${xratio * 100}% ${yratio * 100}%`
+        span.style.backgroundPosition = `-${this.x * sheet.swidth}px -${this.y * sheet.sheight}px`;
+        span.style.width = sheet.swidth + "px";
+        span.style.transformOrigin = "0% 50%";
+        span.style.height = sheet.sheight + "px";
+        span.style.transform = `scale(${xratio}, ${yratio})`
         span.style.backgroundRepeat = "no-repeat";
+        span.style.display = "block";
         return span;
     }
 }
@@ -330,7 +333,7 @@ class StatisticsManager {
             var iconContainer = document.createElement("td");
             iconContainer.classList = "statsicon"
             iconContainer.appendChild(icon);
-           
+
 
             var name = document.createElement("td");
             name.className = "statsname tooltip";
@@ -339,6 +342,7 @@ class StatisticsManager {
             if (stat.getDescription()) {
                 var tooltip = document.createElement("div");
                 tooltip.className = "tooltiptext";
+                tooltip.textContent = stat.getDescription();
                 name.appendChild(tooltip);
             }
             
@@ -361,20 +365,27 @@ class StatisticsManager {
 
 
 var statisticsManager = new StatisticsManager();
-statisticsManager.create("Used Time", 0, new SpriteIcon(SpriteSheets.items), "", (val)=>{ return formatTime(Math.floor(val/1000))});
-statisticsManager.create("Player Time", 0, new SpriteIcon(SpriteSheets.items), "", (val)=>{ return formatTime(Math.floor(val/1000))});
-statisticsManager.create("Notifications Shown", 0, new SpriteIcon(SpriteSheets.items));
-statisticsManager.create("Bells Rung", 0, new SpriteIcon(SpriteSheets.items));
-statisticsManager.create("Blurps Played", 0, new SpriteIcon(SpriteSheets.items));
-statisticsManager.create("Average Ping", 0, new SpriteIcon(SpriteSheets.items), "", (val)=> Math.floor(val*10)/10 + "ms");
-statisticsManager.create("Players Joined", 0, new SpriteIcon(SpriteSheets.items));
-statisticsManager.create("Players Left", 0, new SpriteIcon(SpriteSheets.items));
-statisticsManager.create("Servers Added", 0, new SpriteIcon(SpriteSheets.items));
-statisticsManager.create("Servers Removed", 0, new SpriteIcon(SpriteSheets.items));
-statisticsManager.create("Servers Renamed", 0, new SpriteIcon(SpriteSheets.items));
-statisticsManager.create("Servers Moved", 0, new SpriteIcon(SpriteSheets.items));
+statisticsManager.create("Used Time", 0, new SpriteIcon(SpriteSheets.items, 30, 15), "", (val)=>{ return formatTime(Math.floor(val/1000))});
+statisticsManager.create("Player Time", 0, new SpriteIcon(SpriteSheets.items, 15, 45), "", (val)=>{ return formatTime(Math.floor(val/1000))});
+statisticsManager.create("Notifications Shown", 0, new SpriteIcon(SpriteSheets.items, 28, 105));
+statisticsManager.create("Bells Rung", 0, new SpriteIcon(SpriteSheets.items, 8, 75));
+statisticsManager.create("Blurps Played", 0, new SpriteIcon(SpriteSheets.items, 5, 12));
+statisticsManager.create("Average Ping", 0, new SpriteIcon(SpriteSheets.items, 22, 113), "", (val)=> Math.floor(val*10)/10 + "ms");
+statisticsManager.create("Players Joined", 0, new SpriteIcon(SpriteSheets.items, 1, 0));
+statisticsManager.create("Players Left", 0, new SpriteIcon(SpriteSheets.items, 16, 29));
+statisticsManager.create("Servers Added", 0, new SpriteIcon(SpriteSheets.items, 31, 15));
+statisticsManager.create("Servers Removed", 0, new SpriteIcon(SpriteSheets.items, 10, 112));
+statisticsManager.create("Servers Renamed", 0, new SpriteIcon(SpriteSheets.items, 9, 112));
+statisticsManager.create("Servers Moved", 0, new SpriteIcon(SpriteSheets.items, 25, 111));
+statisticsManager.create("Secret Found", false, new SpriteIcon(SpriteSheets.items, 21, 49), "Super secret", (val)=>val ? "Yes" : "No");
+
 
 statisticsManager.setupStatsPage();
+
+function secret() {
+    statisticsManager.get("Secret Found").setValue(true);
+    console.log("Secret Found")
+}
 
 var joinAudio = new Audio("ding.mp3");
 var leaveAudio = new Audio("error.wav");

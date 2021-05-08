@@ -537,7 +537,6 @@ body {
 
 .tooltip {
 	position: relative;
-	display: inline-block;
 	/* If you want dots under the hoverable text */
 }
 
@@ -546,7 +545,6 @@ body {
 
 .tooltip .tooltiptext {
 	visibility: hidden;
-	width: 80px;
 	background-color: black;
 	color: #fff;
 	text-align: center;
@@ -583,14 +581,19 @@ body {
 	border-style: solid;
 	border-color: black transparent transparent transparent;
 }
-
-.content h2 {
-	margin-top: 0px;
+.tooltip.statsname .tooltiptext {
+    margin-left: -100px;
+    width: 200px;
 }
-
 .statsitem td {
     padding: 2px 10px;
 }
-.statsitem .statsicon {
-    min-width: 32px;
+.content h2 {
+	margin-top: 0px;
 }
+td.statsicon {
+    width: 40px;
+    height: 40px;
+    padding: 0px;
+}
+
