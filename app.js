@@ -763,8 +763,11 @@ function updateServer(server) {
         }
 
         var time = Date.now();
+        var last = null;
+        var maxTime = 1000 * 60 * 60 * 1.5;
         for (var i = 0; i < server.elements.lineData.length - 2; i++) {
-            if (time - server.elements.lineData[i].x > 1000 * 60 * 60 * 1) {
+            if (time - server.elements.lineData[i].x > maxTime) {
+                last = server.elements.lineData[i];
                 server.elements.lineData.splice(i, 1);
                 i--;
             } else {
@@ -772,6 +775,10 @@ function updateServer(server) {
             }
         }
 
+        if (last) {
+            last.x = time - maxTime;
+            server.elements.lineData.splice(0, 0, last);
+        }
 
 
         server.elements.lineChart.update()
