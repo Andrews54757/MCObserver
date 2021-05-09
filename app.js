@@ -204,7 +204,7 @@ class Stat {
         return this.value;
     }
     getValueFormatted() {
-        return this.formatFunc ? this.formatFunc(this.getValue()) : this.getValue().toString();
+        return this.formatFunc ? this.formatFunc(this.getValue()) : this.getValue().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
     setValue(value) {
         this.value = value;
