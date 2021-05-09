@@ -518,7 +518,7 @@ function formatTime(d) {
     minutes = minutes % 60;
 
     if (days) {
-        return days + " day" + (days == 0) ? "" : "s";
+        return days + " day" + (days == 0 ? "" : "s");
     } else
     if (hours) {
         return hours + ":" + (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
