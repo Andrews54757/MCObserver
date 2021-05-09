@@ -2,8 +2,6 @@
 
 Observe Minecraft servers, and get audio and visual notifications when people join
 
-Note: Player-specific notifications will not work if the server has more than 12 players.
-
 https://mcobserver.com/
 
 Main page:
@@ -11,6 +9,9 @@ Main page:
 
 Server tracker:
 <img width="1530" alt="Screen Shot" src="https://user-images.githubusercontent.com/13282284/117255175-57799a00-ae17-11eb-87dd-7e5210f941c5.png">
+
+Statistics (more coming):
+<img width="1374" alt="Screen Shot" src="https://user-images.githubusercontent.com/13282284/117556548-20ce9a00-b038-11eb-9bb6-f0db7ce994b9.png">
 
 Mobile-friendly:
 <img width="187" alt="Screen Shot" src="https://user-images.githubusercontent.com/13282284/107289656-595bd900-6a33-11eb-846d-61d105fb044c.png">
