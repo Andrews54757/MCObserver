@@ -517,8 +517,14 @@ function formatTime(d) {
     hours = hours % 24;
     minutes = minutes % 60;
 
+    var years = Math.floor(days / 365);
+    days = days % 365;
+
+    if (years) {
+        return years + " year" + (years == 1 ? "" : "s") + " " + days + " day" + (days == 1 ? "" : "s");
+    } else
     if (days) {
-        return days + " day" + (days == 0 ? "" : "s");
+        return days + " day" + (days == 1 ? "" : "s");
     } else
     if (hours) {
         return hours + ":" + (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
