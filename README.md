@@ -5,7 +5,7 @@ Observe Minecraft servers, and get audio and visual notifications when people jo
 https://mcobserver.com/
 
 Main page:
-<img width="1532" alt="Screen Shot" src="https://user-images.githubusercontent.com/13282284/118084028-f4938000-b38d-11eb-9c3f-f60b6e70130c.png">
+<img width="1374" alt="Screen Shot" src="https://user-images.githubusercontent.com/13282284/118084157-37edee80-b38e-11eb-9f0d-f2990f16c2c1.png">
 
 Server tracker:
 <img width="1530" alt="Screen Shot" src="https://user-images.githubusercontent.com/13282284/117255175-57799a00-ae17-11eb-87dd-7e5210f941c5.png">
