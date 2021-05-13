@@ -373,6 +373,7 @@ statisticsManager.create("Blurps Played", 0, new SpriteIcon(SpriteSheets.items, 
 statisticsManager.create("Average Ping", 0, new SpriteIcon(SpriteSheets.items, 22, 113), "", (val)=> Math.floor(val*10)/10 + "ms");
 statisticsManager.create("Players Joined", 0, new SpriteIcon(SpriteSheets.items, 1, 0));
 statisticsManager.create("Players Left", 0, new SpriteIcon(SpriteSheets.items, 16, 29));
+statisticsManager.create("Friends Found", 0, new SpriteIcon(SpriteSheets.items, 10, 45));
 statisticsManager.create("Servers Added", 0, new SpriteIcon(SpriteSheets.items, 31, 15));
 statisticsManager.create("Servers Removed", 0, new SpriteIcon(SpriteSheets.items, 10, 112));
 statisticsManager.create("Servers Renamed", 0, new SpriteIcon(SpriteSheets.items, 9, 112));
@@ -1016,6 +1017,13 @@ function doAction(serverConfigValue, configValue, list, whitelist) {
 function join(str, server, list) {
     if (document.getElementById("loadingpage").style.display != "none") return;
 
+    if (list && config.notifyList.length) {
+        list.forEach((player)=>{
+            if (config.notifyList.includes(player.name))
+                statisticsManager.get("Friends Found").increment();
+        });
+    }
+    
     if (doAction(server.config.slvl, config.soundLevel, list, config.notifyList)) playJoinAudio();
     if (doAction(server.config.nlvl, config.notificationsLevel, list, config.notifyList)) notify(`[${server.online}/${server.max}] ${str} joined ${server.config.name}`, server)
 }
