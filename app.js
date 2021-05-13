@@ -1023,7 +1023,7 @@ function join(str, server, list) {
                 statisticsManager.get("Friends Found").increment();
         });
     }
-    
+
     if (doAction(server.config.slvl, config.soundLevel, list, config.notifyList)) playJoinAudio();
     if (doAction(server.config.nlvl, config.notificationsLevel, list, config.notifyList)) notify(`[${server.online}/${server.max}] ${str} joined ${server.config.name}`, server)
 }
@@ -1446,6 +1446,7 @@ if (configstr) {
     })
 
     console.log("Loaded " + config.servers.length + " servers from Storage")
+    setupSettings();
 }
 }
 init();
@@ -1640,4 +1641,4 @@ function setupSettings() {
 
 }
 
-setupSettings();
+
