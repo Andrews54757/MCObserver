@@ -1007,7 +1007,7 @@ function doAction(serverConfigValue, configValue, list, whitelist) {
     } else if (value == 1) {
         if (!list) return false;
         return !list.every((player) => {
-            return !whitelist.includes(player.name);
+            return !whitelist.includes(player.name.toLowerCase());
         })
     } else if (value == 2) {
         return true;
@@ -1019,7 +1019,7 @@ function join(str, server, list) {
 
     if (list && config.notifyList.length) {
         list.forEach((player)=>{
-            if (config.notifyList.includes(player.name))
+            if (config.notifyList.includes(player.name.toLowerCase()))
                 statisticsManager.get("Friends Found").increment();
         });
     }
@@ -1550,7 +1550,7 @@ function setupSettings() {
 
             var current = nodes[i];
             var img = null;
-            var value = current.textContent.trim();
+            var value = current.textContent.trim().toLowerCase();
 
             if (value.length) {
                 config.notifyList.push(value);
