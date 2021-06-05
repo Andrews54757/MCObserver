@@ -1612,7 +1612,7 @@ function setupSettings() {
 
                 img.style.opacity = 0;
             } else
-            if (img.previousSibling.nodeType != 3 || img.previousSibling.textContent.trim().length == 0 || img.previousSibling.textContent.trim() != img.dataset.value) {
+            if (img.previousSibling.nodeType != 3 || img.previousSibling.textContent.trim().length == 0 || img.previousSibling.textContent.trim().toLowerCase() != img.dataset.value) {
                 img.parentElement.removeChild(img);
             } else {
                 img.style.opacity = "";
