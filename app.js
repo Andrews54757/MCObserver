@@ -1551,7 +1551,6 @@ function setupSettings() {
             var current = nodes[i];
             var img = null;
             var value = current.textContent.trim().toLowerCase();
-		current.textContent = value;
 		
             if (value.length) {
                 config.notifyList.push(value);
