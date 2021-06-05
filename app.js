@@ -1563,7 +1563,7 @@ function setupSettings() {
                     img.style.height = "10px";
                     img.style.marginLeft = "5px";
                     img.style.userSelect = "none";
-                    img.contentEditable = false;
+                    img.contentEditable = true;
 
                     current.after(img);
                 }
