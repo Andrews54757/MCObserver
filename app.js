@@ -689,7 +689,7 @@ function createServerElements(server) {
         }
 
         server.config.name = nameinput.value;
-
+        statisticsManager.get("Servers Renamed").increment();
         saveConfig();
 
     });
@@ -1404,15 +1404,6 @@ wakeBackend(10);
 async function init() {
 var configstr = (await localforage.getItem("config"));
 var newstats = await localforage.getItem("stats");
-if (!configstr) {
-    configstr = localStorage.getItem("config");
-    if (configstr) {
-        configstr = JSON.parse(configstr);
-        localforage.setItem("config", configstr);
-        console.log("Retrieved data from legacy storage")
-    }
-}
-
 if (newstats) {
     statisticsManager.loadStatsFromObject(newstats);
 }
