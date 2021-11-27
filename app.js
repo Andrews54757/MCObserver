@@ -1437,10 +1437,12 @@ if (configstr) {
     })
 
     console.log("Loaded " + config.servers.length + " servers from Storage")
+    }
+setupSettings();
+}
+init().catch(()=>{
     setupSettings();
-}
-}
-init();
+});
 
 function setupSettings() {
     var box = document.getElementById("defaultBoxSettings");
