@@ -13,7 +13,7 @@ Explore at your own risk!
 
 
 // Proxy server since browser can't do raw TCP
-var SERVER_URL = "https://minecraft-status-observer.herokuapp.com";
+var SERVER_URL = "https://mc-observer-server.glitch.me";
 
 var SERVER_STATUS = "";
 
